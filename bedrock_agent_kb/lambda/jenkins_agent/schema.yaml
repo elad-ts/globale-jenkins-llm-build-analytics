@@ -1,0 +1,133 @@
+openapi: 3.0.0
+info:
+  title: Bedrock LLM Agent API
+  description: API for analyzing Jenkins job failures, querying knowledge base, and generating actionable insights.
+  version: 1.0.0
+servers:
+  - url: https://api.bedrock-agent.example.com
+paths:
+  /analyze-failure:
+    post:
+      description: |
+        Analyze a Jenkins job failure and provide remediation steps.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_name:
+                  type: string
+                  description: The name of the Jenkins job that failed.
+                jenkinsfile:
+                  type: string
+                  description: Contents of the Jenkinsfile associated with the job.
+                upstream_jobs:
+                  type: array
+                  items:
+                    type: string
+                  description: List of upstream jobs triggering this job.
+                downstream_jobs:
+                  type: array
+                  items:
+                    type: string
+                  description: List of downstream jobs triggered by this job.
+                log_snippet:
+                  type: string
+                  description: Relevant log output from the failed Jenkins job.
+                failure_metadata:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      description: ID of the user triggering the build.
+                    build_id:
+                      type: string
+                      description: Unique identifier of the build.
+                    timestamp:
+                      type: string
+                      format: date-time
+                      description: Timestamp of the failure.
+                    error_type:
+                      type: string
+                      description: Categorization of the error.
+                query_type:
+                  type: string
+                  enum: ["analyze_failure", "get_best_practices", "generate_summary"]
+                  description: The type of analysis or query to perform.
+                additional_context:
+                  type: object
+                  properties:
+                    priority_level:
+                      type: string
+                      enum: ["high", "medium", "low"]
+                      description: Priority level of the failure analysis.
+                    retry_count:
+                      type: integer
+                      description: Number of retries attempted for the job.
+      responses:
+        "200":
+          description: Successful response with analysis and recommendations.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  problem_summary:
+                    type: string
+                    description: A summary of the detected issue.
+                  cause_analysis:
+                    type: string
+                    description: Detailed analysis of the root cause.
+                  remediation_steps:
+                    type: array
+                    items:
+                      type: string
+                    description: List of recommended remediation steps.
+                  additional_notes:
+                    type: string
+                    description: Additional contextual information or suggestions.
+  /query-knowledge-base:
+    get:
+      description: |
+        Query the knowledge base for best practices and historical failure insights.
+      parameters:
+        - in: query
+          name: query
+          required: true
+          schema:
+            type: string
+          description: The search query for the knowledge base.
+        - in: query
+          name: job_name
+          required: false
+          schema:
+            type: string
+          description: Name of the Jenkins job (optional for context-specific search).
+      responses:
+        "200":
+          description: Successful response with knowledge base insights.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  relevant_issues:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        issue_summary:
+                          type: string
+                          description: Summary of a related issue.
+                        resolution_steps:
+                          type: array
+                          items:
+                            type: string
+                          description: Steps taken to resolve the related issue.
+                  best_practices:
+                    type: array
+                    items:
+                      type: string
+                    description: List of best practices related to the query.

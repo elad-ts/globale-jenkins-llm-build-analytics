@@ -1,0 +1,11 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:t="/lib/hudson">
+    <f:section title="Build-failure-plugin config">
+        <f:entry title="Included Projects" field="includedProjects">
+            <f:textbox name="_.includedProjects" value="${instance.includedProjectsAsString}" />
+            <f:help>
+                Enter project names separated by commas (e.g., "project1, project2, project3").
+            </f:help>
+        </f:entry>
+    </f:section>
+</j:jelly>
