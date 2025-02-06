@@ -1,0 +1,23 @@
+evaluator:
+  model: claude-3
+
+target:
+  type: bedrock-agent
+  bedrock_agent_id: "<your-bedrock-agent-id>"
+  bedrock_agent_alias_id: "<your-bedrock-agent-alias-id>"
+
+tests:
+  analyze_jenkins_build_failure:
+    steps:
+      - Provide the following Jenkins build logs to the agent and ask for the root cause:
+          log: |
+            [INFO] Compiling 10 source files to /workspace/target/classes
+            [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile
+            [ERROR] COMPILATION ERROR:
+            [ERROR] /workspace/src/main/java/com/example/App.java:[10,20] cannot find symbol
+            [ERROR] symbol:   class Logger
+            [ERROR] location: class com.example.App
+            [ERROR] /workspace/src/main/java/com/example/App.java:[15,9] cannot find symbol
+    expected_results:
+      - The agent correctly identifies that the root cause is a missing import statement for the `Logger` class.
+      - The agent suggests adding `import java.util.logging.Logger;` at the beginning of `App.java`.

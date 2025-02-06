@@ -183,6 +183,7 @@ public class JenkinsBuildFailureReporter extends RunListener<Run<?, ?>> {
     }
 
     private void uploadToS3(String key, String content) {
+        // TODO:: eladh - make it generic by suppling restul api
         try {
             PutObjectRequest putRequest =
                     PutObjectRequest.builder().bucket(BUCKET_NAME).key(key).build();

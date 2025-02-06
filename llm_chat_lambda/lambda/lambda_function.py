@@ -8,13 +8,11 @@ AGENT_ID = os.getenv("AGENT_ID", "your-agent-id")
 AGENT_ALIAS_ID = os.getenv("AGENT_ALIAS_ID", "")  # Optional
 PROMPT_IDENTIFIER = os.getenv("PROMPT_IDENTIFIER", "default-prompt")
 PROMPT_VERSION = os.getenv("PROMPT_VERSION", "latest")
-PROMPT_VERSION = os.getenv("PROMPT_VERSION", "latest")
 
 
 # Initialize the Bedrock Agent and Runtime clients
 bedrock_runtime_client = boto3.client('bedrock-agent-runtime', region_name='us-east-1')
 bedrock_client = boto3.client('bedrock', region_name='us-east-1')
-
 
 
 def handler(event, context):

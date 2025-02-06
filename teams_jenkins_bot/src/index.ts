@@ -111,17 +111,15 @@ app.activity(ActivityTypes.Message, async (context: TurnContext, state: Applicat
     // Simulate bot response with a random quote
     let botResponse = 'Sorry, no response available.';
     try {
-        const response = await axios.get('https://zenquotes.io/api/random', {
+        const response = await axios.get('https://api.bedrock-agent.example.com.io', {
             headers: {
                 Authorization: `Bearer YOUR_ACCESS_TOKEN`
             }
         });
-        const quote = response.data[0]?.q; // Extract the quote
-        const author = response.data[0]?.a; // Extract the author
-        botResponse = `Here is your random quote: "${quote}" - ${author}`;
+        botResponse = `Here is your Bedrock Agent response : "${response.data[0]}"`;
     } catch (error) {
-        console.error('Error fetching quote:', error);
-        botResponse = 'Failed to fetch a quote. Please try again later.';
+        console.error('Error fetching response:', error);
+        botResponse = 'Failed to fetch a response. Please try again later.';
     }
 
     // Add bot response to the history
